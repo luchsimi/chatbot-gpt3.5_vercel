@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chatbot</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+    #chatbox { background: white; padding: 15px; border-radius: 8px; height: 300px; overflow-y: auto; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .msg { margin: 10px 0; }
+    .user { text-align: right; color: #4A90E2; }
+    .bot { text-align: left; color: #444; }
+  </style>
+</head>
+<body>
+  <h2>Chatbot de Soporte Técnico (GPT-3.5 Turbo)</h2>
+  <div id="chatbox"></div>
+  <input id="user-input" placeholder="Escribe tu mensaje..." style="width: 75%; padding: 8px;" />
+  <button onclick="sendMessage()" style="padding: 8px;">Enviar</button>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById('user-input');
+      const chatbox = document.getElementById('chatbox');
+      const message = input.value.trim();
+      if (!message) return;
+
+      chatbox.innerHTML += `<div class='msg user'><b>Tú:</b> ${message}</div>`;
+      input.value = '';
+
+      try {
+        const res = await fetch("/api/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+        chatbox.innerHTML += `<div class='msg bot'><b>Bot:</b> ${data.reply}</div>`;
+        chatbox.scrollTop = chatbox.scrollHeight;
+      } catch (err) {
+        chatbox.innerHTML += "<div class='msg bot' style='color:red;'><b>Error:</b> No se pudo conectar al servidor.</div>";
+      }
+    }
+  </script>
+</body>
+</html>
