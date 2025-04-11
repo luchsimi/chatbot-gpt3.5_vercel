@@ -20,7 +20,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "Eres un asistente profesional y amable de soporte técnico." },
+          { role: "system", content: `Eres un asistente profesional y amable de soporte técnico.
+          Los envios tardan de 24/48h.` },
           { role: "user", content: message }
         ]
       })
