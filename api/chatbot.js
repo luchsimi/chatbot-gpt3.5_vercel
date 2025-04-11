@@ -6,7 +6,8 @@ export default async function handler(req, res) {
     message = body.message;
     if (!message) throw new Error("Mensaje vacío");
   } catch (error) {
-    return res.status(400).json({ reply: "Error: El cuerpo de la petición no es válido." });
+    // Devuelve null para que el frontend use su propio mensaje 'Lo siento, no entendí...'
+    return res.status(400).json({ reply: null });
   }
 
   try {
@@ -26,10 +27,13 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "Lo siento, no entendí la pregunta.";
+
+    // Si todo va bien, devuelve la respuesta del modelo
+    const reply = data.choices?.[0]?.message?.content || null;
     res.status(200).json({ reply });
 
   } catch (error) {
-    res.status(500).json({ reply: "Error al conectar con OpenAI." });
+    // Error del servidor: devuelve null para que el frontend ponga su mensaje propio
+    res.status(500).json({ reply: null });
   }
 }
