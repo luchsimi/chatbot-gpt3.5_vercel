@@ -20,10 +20,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: `Eres un asistente profesional y amable de soporte técnico.
-          Los envios tardan de 24/48h.
-          Abrimos de 8 de la mañana a 20 de la tarde.
-          Hay 14 días para devoluciones, el cliente paga el envío` },
+          { role: "system", content: `Eres un asistente profesional y amable de soporte técnico.` },
           { role: "user", content: message }
         ]
       })
